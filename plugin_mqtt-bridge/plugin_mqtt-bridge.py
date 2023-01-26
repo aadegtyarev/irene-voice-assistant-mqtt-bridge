@@ -1,4 +1,4 @@
-# MQTT плагин
+# MQTT мост для Ирины
 # Автор: Alexander Degtyarev © 2023, MIT
 # https://github.com/aadegtyarev/irene-voice-assistant-mqtt-plugin
 
@@ -15,7 +15,7 @@ modname = os.path.basename(__file__)[:-3]
 # функция на старте
 def start(core:VACore):
     manifest = {
-        "name": "MQTT плагин",
+        "name": "MQTT мост",
         "version": "0.1",
         "require_online": True,
 
