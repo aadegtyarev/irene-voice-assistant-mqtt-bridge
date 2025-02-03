@@ -1,5 +1,6 @@
 # MQTT мост для Ирины
 # Автор: Alexander Degtyarev © 2023, MIT
+# Исправления багов и обновление: RandomD1V - StasTPoff stastpoff.ru
 # https://github.com/aadegtyarev/irene-voice-assistant-mqtt-plugin
 
 import os
@@ -20,11 +21,11 @@ def start(core:VACore):
         "require_online": True,
 
         "default_options": {
-            "mqtt_broker": "192.168.2.108",
+            "mqtt_broker": "",
             "mqtt_port": 1883,
             "mqtt_user": "",
             "mqtt_password": "",
-            "mqtt_topic": "irine-voice-assistant"
+            "mqtt_topic": "irine"
         },
         # команды-триггеры, которые запускают нужные вам функции
         "commands": {
@@ -51,10 +52,11 @@ def on_message(client, userdata, msg):
 
 def mqtt_connect(options:dict):
     client_id = f'python-mqtt-{random.randint(0, 1000)}'
-    global client; client = mqtt.Client(client_id)
+    global client; client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, client_id)
     client.on_connect = on_connect
     client.on_message = on_message
     client.username_pw_set(options['mqtt_user'], options['mqtt_password'])
+    client.tls_set()
     client.connect(options['mqtt_broker'], options['mqtt_port'], 60)
     client.loop_start()
     client.subscribe(options['mqtt_topic']+"/say")
